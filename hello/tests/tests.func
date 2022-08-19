@@ -1,0 +1,5 @@
+int __test_example() {
+	( int gas_used, tuple stack ) = invoke_method( hello, [] );
+	throw_unless( 100, stack.first() == 1337 );
+	return gas_used;
+}

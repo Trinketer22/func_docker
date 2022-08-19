@@ -1,0 +1,8 @@
+() recv_internal( slice msg ) {
+
+}
+
+;;testable
+( int ) hello() method_id {
+	return 1337;
+}
