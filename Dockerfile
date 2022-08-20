@@ -12,7 +12,7 @@ WORKDIR /ton
 
 RUN mkdir build && \
 	cd build && \
-	cmake ..  && \
+	cmake .. -DTON_ARCH=  && \
 	cmake --build . --parallel $(nproc) -j $(nproc) --target fift && \
 	cmake --build . --parallel  $(nproc) -j $(nproc)  --target func && \
 	cmake --build . --parallel  $(nproc) -j $(nproc)  --target lite-client
