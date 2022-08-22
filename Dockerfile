@@ -4,15 +4,30 @@ RUN apt-get update && \
 	rm -rf /var/lib/apt/lists/*
 ENV CC clang-6.0
 ENV CXX clang++-6.0
+
+ARG TON_GIT=https://github.com/SpyCheese/ton
+ARG TON_BRANCH=toncli-local
+ARG BUILD_DEBUG=0
+ARG CUSTOM_CMAKE=""
+
 WORKDIR /
-RUN git clone -b toncli-local --recursive https://github.com/SpyCheese/ton && \
-	git clone https://github.com/disintar/toncli
+
+RUN echo "Cloning ${TON_GIT} ${TON_BRANCH}" && \
+	git clone -b ${TON_BRANCH} --recursive ${TON_GIT} && \
+    	git clone https://github.com/disintar/toncli
 
 WORKDIR /ton
 
 RUN mkdir build && \
 	cd build && \
-	cmake .. -DTON_ARCH=  && \
+	if [ ! -z ${CUSTOM_CMAKE} ]; then \
+		echo "Executing cmake with args: ${CUSTOM_CMAKE}"; \
+		cmake .. ${CUSTOM_CMAKE}; \
+	elif [ ${BUILD_DEBUG} -eq 0 ]; then \
+		cmake .. -DTON_ARCH="" -DCMAKE_BUILD_TYPE=Release; \
+	else \
+		cmake .. -DTON_ARCH=""; \
+	fi && \
 	cmake --build . --parallel $(nproc) -j $(nproc) --target fift && \
 	cmake --build . --parallel  $(nproc) -j $(nproc)  --target func && \
 	cmake --build . --parallel  $(nproc) -j $(nproc)  --target lite-client && \
