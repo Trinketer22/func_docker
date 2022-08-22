@@ -53,6 +53,4 @@ COPY toncli.sh /
 
 WORKDIR /code
 
-CMD [ "toncli", "run_tests" ]
-
 ENTRYPOINT ["/toncli.sh"]
