@@ -6,8 +6,28 @@ Inspired by [Dockerfile for the Open Network Node](https://github.com/ton-blockc
 Built on Ubuntu 20.04 so should be WSL docker compatible.
 
 ## Build
- To build an image run: `docker build . -t toncli-local`  
- Where *toncli-local* would be an image name
+ To build an image run: `docker build . -t toncli-local [ optional --build-arg ]`  
+ Where *toncli-local* would be an image name.
+ 
+ In most cases that's it.  
+ However, if you need something special, there are custom build arguments available.
+ 
+ ### Custom build arguments
+- **TON_GIT** specifies git repo url to fetch sources from. [SpyCheese](https://github.com/SpyCheese/ton) by default.
+- **TON_BRANCH** specifies git branch to fetch from. **Set to toncli-local by default** so would likely require change if alternate *TON_GIT* is set.
+- **BUILD_DEBUG** is self-explaintatory. By default *Release* binaries are built. Set *BUILD_DEBUG=1* to build debug binaries.
+- **CUSTOM_CMAKE** Overrides build process cmake flags. Use it at your own risk. 
+	
+Example of building debug binaries from [ton-blockchain/ton](https://github.com/ton-blockchain/ton) testnet branch
+
+```console
+docker build . -t toncli-local \
+--build-arg TON_GIT=https://github.com/ton-blockchain/ton \
+--build-arg TON_BRANCH=testnet \
+--build-arg BUILD_DEBUG=1
+```
+
+
 
 ## Use
  You're going to need to pass your workdir as a volume to make things happen
