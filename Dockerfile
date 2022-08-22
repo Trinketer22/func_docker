@@ -15,7 +15,8 @@ RUN mkdir build && \
 	cmake .. -DTON_ARCH=  && \
 	cmake --build . --parallel $(nproc) -j $(nproc) --target fift && \
 	cmake --build . --parallel  $(nproc) -j $(nproc)  --target func && \
-	cmake --build . --parallel  $(nproc) -j $(nproc)  --target lite-client
+	cmake --build . --parallel  $(nproc) -j $(nproc)  --target lite-client && \
+	cmake --build . --parallel  $(nproc) -j $(nproc)  --target tonlibjson
 
 FROM ubuntu:20.04 as toncli
 RUN apt-get update && \
@@ -25,6 +26,7 @@ RUN apt-get update && \
 COPY --from=builder /ton/build/lite-client/lite-client /usr/local/bin/
 COPY --from=builder /ton/build/crypto/func /usr/local/bin/
 COPY --from=builder /ton/build/crypto/fift /usr/local/bin/
+COPY --from=builder /ton/build/tonlib/libtonlibjson.so /usr/local/lib/
 COPY --from=builder /toncli /toncli
 
 WORKDIR /
