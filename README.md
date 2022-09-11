@@ -6,7 +6,8 @@ Inspired by [Dockerfile for the Open Network Node](https://github.com/ton-blockc
 Built on Ubuntu 20.04 so should be WSL docker compatible.
 
 ## Pre-built images
-
+Pre-built images availabe.  
+Mult-arch supported *x86_64 (amd64)* and *arm64/v8* **(M1 compatible!)**.  
 [https://hub.docker.com/r/trinketer22/func_docker/tags](https://hub.docker.com/r/trinketer22/func_docker/tags)  
 
 - main is the image from master branch.
