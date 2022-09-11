@@ -5,6 +5,13 @@ Setting it all up manually could be cumbersome otherwise.
 Inspired by [Dockerfile for the Open Network Node](https://github.com/ton-blockchain/ton/tree/master/docker)  
 Built on Ubuntu 20.04 so should be WSL docker compatible.
 
+## Pre-built images
+
+[https://hub.docker.com/r/trinketer22/func_docker/tags](https://hub.docker.com/r/trinketer22/func_docker/tags)  
+
+- main is the image from master branch.
+- slim is the image from slim branch.
+
 ## Build
  To build an image run: `docker build . -t toncli-local [ optional --build-arg ]`  
  Where *toncli-local* would be an image name.
