@@ -3,7 +3,9 @@
 This docker image should come in handy to run [toncli](https://github.com/disintar/toncli) with the [new tests support](https://github.com/disintar/toncli/blob/master/docs/advanced/func_tests_new.md).  
 Setting it all up manually could be cumbersome otherwise.  
 Inspired by [Dockerfile for the Open Network Node](https://github.com/ton-blockchain/ton/tree/master/docker)  
-Built on Ubuntu 20.04 so should be WSL docker compatible.
+Image is built on [alpine linux](https://www.alpinelinux.org/) to reduce size.  
+**NOT tested on WSL**.  
+If you're looking for WSL compatibility check out [master branch](https://github.com/Trinketer22/func_docker).  
 
 ## Build
  To build an image run: `docker build . -t toncli-local [ optional --build-arg ]`  
