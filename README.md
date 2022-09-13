@@ -8,10 +8,10 @@ Built on Ubuntu 20.04 so should be WSL docker compatible.
 ## Pre-built images
 Pre-built images availabe.  
 Mult-arch supported *x86_64 (amd64)* and *arm64/v8* **(M1 compatible!)**.  
-[https://hub.docker.com/r/trinketer22/func_docker/tags](https://hub.docker.com/r/trinketer22/func_docker/tags)  
+[https://hub.docker.com/r/trinketer22/func_docker/tags](https://hub.docker.com/r/trinketer22/func_docker/)  
 
-- main is the image from master branch.
-- slim is the image from slim branch.
+- main is the image from master(this) branch.
+- slim is extremely small image (< 50MB compressed) from slim branch.
 
 ## Build
  To build an image run: `docker build . -t toncli-local [ optional --build-arg ]`  
