@@ -2,29 +2,38 @@
 
 This docker image should come in handy to run [toncli](https://github.com/disintar/toncli) with the [new tests support](https://github.com/disintar/toncli/blob/master/docs/advanced/func_tests_new.md).  
 Setting it all up manually could be cumbersome otherwise.  
-Inspired by [Dockerfile for the Open Network Node](https://github.com/ton-blockchain/ton/tree/master/docker)  
+Inspired by [Dockerfile for the Open Network Node](https://github.com/ton-blockchain/ton/tree/master/docker).  
 Built on Ubuntu 20.04 so should be WSL docker compatible.
 
 ## Pre-built images
-Pre-built images availabe.  
+
+Pre-built images availabe. 
 Mult-arch supported *x86_64 (amd64)* and *arm64/v8* **(M1 compatible!)**.  
 [https://hub.docker.com/r/trinketer22/func_docker/](https://hub.docker.com/r/trinketer22/func_docker/)  
 
-- main is the image from master(this) branch.
-- slim is extremely small image (< 50MB compressed) from slim branch.
+-   main is the image from master(this) branch.
+-   slim is extremely small image (< 50MB compressed) from slim branch.
+
+### Install pre-built images
+
+Run:`docker pull trinketer22/func_docker` to install main image.  
+or  
+Run `docker pull trinketer22/func_docker:slim` to install slim image.  
+Then you may go straight to [Usage](#use).
 
 ## Build
+
  To build an image run: `docker build . -t toncli-local [ optional --build-arg ]`  
  Where *toncli-local* would be an image name.
  
- In most cases that's it.  
+ In most cases that's it. 
  However, if you need something special, there are custom build arguments available.
  
  ### Custom build arguments
-- **TON_GIT** specifies git repo url to fetch sources from. [SpyCheese](https://github.com/SpyCheese/ton) by default.
-- **TON_BRANCH** specifies git branch to fetch from. **Set to toncli-local by default** so would likely require change if alternate *TON_GIT* is set.
-- **BUILD_DEBUG** is self-explaintatory. By default *Release* binaries are built. Set *BUILD_DEBUG=1* to build debug binaries.
-- **CUSTOM_CMAKE** Overrides build process cmake flags. Use it at your own risk. 
+-   **TON_GIT** specifies git repo url to fetch sources from. [SpyCheese](https://github.com/SpyCheese/ton) by default.
+-   **TON_BRANCH** specifies git branch to fetch from. **Set to toncli-local by default** so would likely require change if alternate *TON_GIT* is set.
+-   **BUILD_DEBUG** is self-explaintatory. By default *Release* binaries are built. Set *BUILD_DEBUG=1* to build debug binaries.
+-   **CUSTOM_CMAKE** Overrides build process cmake flags. Use it at your own risk. 
 	
 Example of building debug binaries from [ton-blockchain/ton](https://github.com/ton-blockchain/ton) testnet branch
 
@@ -38,8 +47,10 @@ docker build . -t toncli-local \
 
 
 ## Use
+
  You're going to need to pass your workdir as a volume to make things happen
- ### Creating project
+
+### Creating project
  Run  
  
  ``` console
@@ -82,9 +93,9 @@ docker build . -t toncli-local \
   toncli-local update_libs
   ```
   After that you should go through standard toncli initialization dialog and pass absolute paths to the binaries
-  - /usr/local/bin/func
-  - /usr/local/bin/fift
-  - /usr/local/bin/lite-client
+-   /usr/local/bin/func
+-   /usr/local/bin/fift
+-   /usr/local/bin/lite-client
   
   Don't get confused those path's are inside the docker image and not your local system.  
   After that you should get an initialized toncli directory on your local system at */path/to/toncli_conf_dir/toncli*.  
@@ -97,7 +108,7 @@ docker build . -t toncli-local \
   test-libs
   ``` 
   
-  Now you can use it in the deploy or any other process like so. 
+  Now you can use it in the deploy or any other process like so.  
   
   Run  
   
