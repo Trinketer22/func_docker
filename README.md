@@ -19,6 +19,9 @@ Mult-arch supported *x86_64 (amd64)* and *arm64/v8* **(M1 compatible!)**.
 Run:`docker pull trinketer22/func_docker` to install main image.  
 or  
 Run `docker pull trinketer22/func_docker:slim` to install slim image.  
+
+Run `docker tag trinketer22/func_docker toncli-local` to give an alias `toncli-local` for the image `trinketer22/func_docker`.
+
 Then you may go straight to [Usage](#use).
 
 ## Build
