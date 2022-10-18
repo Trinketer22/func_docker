@@ -80,7 +80,7 @@ docker build . -t toncli-local \
    ``` console
    docker run --rm -it \
    -v ~/Dev/test_project:/code \
-   toncli-local run_test
+   toncli-local run_tests
    ``` 
 
  ### Deploying contract
