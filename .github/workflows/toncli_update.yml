@@ -1,4 +1,4 @@
-name: Toncli update test
+name: Other
 
 on:
   workflow_dispatch:
