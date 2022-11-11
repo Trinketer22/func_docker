@@ -10,4 +10,4 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Main image update
-        run: docker build . --tag trinketer22/func_docker:main-amd64
+        run: docker build . --file Dockerfile --tag trinketer22/func_docker:main-amd64
