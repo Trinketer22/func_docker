@@ -1,0 +1,13 @@
+name: Toncli update test
+
+on:
+  workflow_dispatch:
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Main image update
+        run: docker build . --tag trinketer22/func_docker:main-amd64
