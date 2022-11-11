@@ -43,7 +43,7 @@ jobs:
           username: ${{secrets.DOCKERHUB_USERNAME}}
           password: ${{secrets.DOCKERHUB_TOKEN}}
 
-      - name: Update main
+      - name: Update slim
         uses: docker/build-push-action@v3
         with:
           context: .
