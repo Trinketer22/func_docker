@@ -26,4 +26,4 @@ jobs:
 
       - name: Trigger update toncli
         if: steps.cache.outputs.cache-hit != 'true'
-        run: curl -X POST -H  $HEADER_ACCEPT -H $HEADER_BEARER $API_URL -d $BRANCH_REF  
+        run: curl -v -X POST -H  $HEADER_ACCEPT -H $HEADER_BEARER $API_URL -d $BRANCH_REF  
