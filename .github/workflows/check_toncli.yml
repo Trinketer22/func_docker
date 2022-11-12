@@ -22,7 +22,8 @@ jobs:
 
       - name: Update cache
         if: steps.cache.outputs.cache-hit != 'true'
-        name: Update commit
+
+      - name: Update commit
         run: echo ${{steps.toncli_cur.outputs.commit}} > prev_commit.txt
 
       - name: Trigger update toncli
