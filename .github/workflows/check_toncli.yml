@@ -30,4 +30,4 @@ jobs:
           prev_commit="${{ needs.download-prev.prev}}"
           echo $prev_commit
           echo $cur_commit
-          [ "${cur_commit}" == "{$prev_commit}" ] && echo ${cur_commit} >> $GITHUB_OUTPUT
+          [ "${cur_commit}" == "{$prev_commit}" ] && echo "No update" || echo "${cur_commit}" >> $GITHUB_OUTPUT 
