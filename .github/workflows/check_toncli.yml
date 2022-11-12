@@ -31,5 +31,4 @@ jobs:
           HEADER_ACCEPT: "Accept: application/vnd.github+json"
 
         run: |
-          echo $HEADER_ACCEPT
-          curl -v -H  $HEADER_ACCEPT -H $HEADER_BEARER $API_URL -d $BRANCH_REF  
+          curl -v -H  "$HEADER_ACCEPT" -H "$HEADER_BEARER" $API_URL -d $BRANCH_REF  
