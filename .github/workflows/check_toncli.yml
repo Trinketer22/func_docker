@@ -14,9 +14,11 @@ jobs:
         with:
           path: prev_commit.txt
           key: prev_commit
-      - id: load_prev:
+
+      - id: load_prev
         run: |
           ${{steps.cache.outputs.cache-hit}} && echo "prev=$(cat prev_commit.txt)" >> $GITHUB_OUTPUT || echo "Cache not hit"
+
       - id: check
         name: Check commit
         run: |
