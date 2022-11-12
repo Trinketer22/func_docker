@@ -32,7 +32,7 @@ jobs:
   trigger-update:
     runs-on: ubuntu-latest
     needs: [check-commit]
-    if: ${{needs.check-commit.outputs.update != "" }}
+    if: "${{needs.check-commit.outputs.update != '' }}"
     steps:
       - name: Save prev
         run: | 
