@@ -1,24 +1,33 @@
 name: "Check toncli"
 on:
   workflow_dispatch:
-
 jobs:
-  check-commit:
+  download-prev:
     runs-on: ubuntu-latest
     outputs:
-      update_required: ${{steps.check.outputs.update}}
+      prev: ${{steps.prev.output.prev_commit}}
     steps:
       - id: prev
         name: Check previous
         uses: actions/download-artifact@v3
         with:
-          name: prev-commit
-          path: prev-commit.txt
+          name: prev_commit
+          path: prev_commit.txt
+      - name: Prev output
+        run: cat prev_commit.txt >> $GITHUB_OUTPUT
+        
+  check-commit:
+    runs-on: ubuntu-latest
+    outputs:
+      update_required: ${{steps.check.outputs.update}}
+    if: ${{ always() }}
+    needs: [download-prev]
+    steps:
       - id: check
         name: Check commit
         run: |
           $cur_commit  = $(git ls-remote https://github.com/disintar/toncli master | awk '{print $1}')
-          $prev_commit = $(cat prev-commit.txt)
+          $prev_commit = ${{ needs.download-prev.prev}}
           echo $cur_commit
           echo $prev_commit
           [ "$cur_commit" == "$prev_commit" ] && echo 1 >> $GITHUB_OUTPUT
