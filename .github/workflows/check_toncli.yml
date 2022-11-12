@@ -13,9 +13,12 @@ jobs:
         uses: actions/cache@v3
         with:
           path: prev_commit.txt
-          key: ${{steps.toncli_cur.outputs.commit}}
+          key: toncli-${{steps.toncli_cur.outputs.commit}}
 
-      - id: update
+      - name: Update cache
         if: steps.cache.outputs.cache-hit != 'true'
         name: Update commit
         run: echo ${{steps.toncli_cur.outputs.commit}} > prev_commit.txt
+      - name: Trigger update toncli
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: curl -X POST -H -H "Accept: application/vnd.github+json" -H "Authorization: Bearer ${{secrets.GITHUB_TOKEN}}" https://api.github.com/repos/Trinketer22/func_docker/actions/workflows/test.yml/dispatches
