@@ -4,11 +4,6 @@ on:
 jobs:
   check-commit:
     runs-on: ubuntu-latest
-    env:
-      API_URL: "https://api.github.com/repos/Trinketer22/func_docker/actions/workflows/test.yml/dispatches"
-      HEADER_BEARER: "Authorization: Bearer ${{secrets.GITHUB_TOKEN}}"
-      HEADER_ACCEPT: "Accept: application/vnd.github+json"
-      BRANCH_REF: '{"ref":"update_toncli"}'
     steps:
       - id: toncli_cur
         name: Current commit
@@ -26,4 +21,13 @@ jobs:
 
       - name: Trigger update toncli
         if: steps.cache.outputs.cache-hit != 'true'
-        run: curl -v -X POST -H  $HEADER_ACCEPT -H $HEADER_BEARER $API_URL -d $BRANCH_REF  
+
+        env:
+          API_URL: "https://api.github.com/repos/Trinketer22/func_docker/actions/workflows/test.yml/dispatches"
+          HEADER_BEARER: "Authorization: Bearer ${{secrets.GITHUB_TOKEN}}"
+          BRANCH_REF: '{"ref":"update_toncli"}'
+          HEADER_ACCEPT: "Accept: application/vnd.github+json"
+
+        run: |
+          echo $HEADER_ACCEPT
+          curl -v -H  $HEADER_ACCEPT -H $HEADER_BEARER $API_URL -d $BRANCH_REF  
