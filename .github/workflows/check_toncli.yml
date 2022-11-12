@@ -32,5 +32,4 @@ jobs:
           BRANCH_REF: '{"ref":"update_toncli"}'
           HEADER_ACCEPT: "Accept: application/vnd.github+json"
 
-        run: |
-          curl -v -H  "$HEADER_ACCEPT" -H "$HEADER_BEARER" $API_URL -d $BRANCH_REF  
+        run: curl -H  "$HEADER_ACCEPT" -H "$HEADER_BEARER" $API_URL -d $BRANCH_REF  
