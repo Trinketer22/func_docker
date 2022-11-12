@@ -21,4 +21,4 @@ jobs:
         run: |
           cur_commit=$(git ls-remote https://github.com/disintar/toncli master | awk '{print $1}')
           prev_commit="${{steps.load_prev.outputs.prev}}"
-          [ "${cur_commit}" == "${prev_commit}" ] && echo "No update" || echo "update=${cur_commit}" > prev_commit.txt
+          [ "${cur_commit}" == "${prev_commit}" ] && echo "No update" || echo "${cur_commit}" > prev_commit.txt
