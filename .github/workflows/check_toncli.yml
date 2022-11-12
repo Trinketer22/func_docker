@@ -28,9 +28,8 @@ jobs:
         run: |
           cur_commit=$(git ls-remote https://github.com/disintar/toncli master | awk '{print $1}')
           prev_commit="${{needs.download-prev.prev}}"
-          echo $prev_commit
-          echo $cur_commit
-          [ "${cur_commit}" == "{$prev_commit}" ] && echo "No update" || echo "update=${cur_commit}" >> $GITHUB_OUTPUT 
+          echo "update=${cur_commit}"
+          [ "${cur_commit}" == "${prev_commit}" ] && echo "No update" || echo "update=${cur_commit}" >> $GITHUB_OUTPUT 
   trigger-update:
     runs-on: ubuntu-latest
     needs: [check-commit]
