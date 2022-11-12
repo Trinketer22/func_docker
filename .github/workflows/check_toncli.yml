@@ -5,20 +5,17 @@ jobs:
   check-commit:
     runs-on: ubuntu-latest
     steps:
+      - id: toncli_cur
+        name: Current commit
+        run: echo "commit=$(git ls-remote https://github.com/disintar/toncli master | awk '{print $1}')" >> $GITHUB_OUTPUT
       - id: cache
         name: Check cache
         uses: actions/cache@v3
         with:
           path: prev_commit.txt
-          key: prev_commit
+          key: steps.toncli_cur.outputs.commit
 
-      - id: load_prev
-        run: |
-          [ "${{steps.cache.outputs.cache-hit}}" != "" ] && echo "prev=$(cat prev_commit.txt)" >> $GITHUB_OUTPUT || echo "Cache not hit"
-
-      - id: check
-        name: Check commit
-        run: |
-          cur_commit=$(git ls-remote https://github.com/disintar/toncli master | awk '{print $1}')
-          prev_commit="${{steps.load_prev.outputs.prev}}"
-          [ "${cur_commit}" == "${prev_commit}" ] && echo "No update" || echo "${cur_commit}" > prev_commit.txt
+      - id: update
+        if: steps.cache.outputs.cache-hit != 'true'
+        name: Update commit
+        run: echo ${{steps.toncli_cur.outputs.commit}} > prev_commit.txt
