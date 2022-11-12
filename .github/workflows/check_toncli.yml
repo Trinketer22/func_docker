@@ -14,7 +14,7 @@ jobs:
           name: prev_commit
           path: prev_commit.txt
       - name: Prev output
-        run: echo "prev_commit=$(cat prev_commit.txt)" >> $GITHUB_OUTPUT
+        run: echo "prev=$(cat prev_commit.txt)" >> $GITHUB_OUTPUT
         
   check-commit:
     runs-on: ubuntu-latest
@@ -28,17 +28,16 @@ jobs:
         run: |
           cur_commit=$(git ls-remote https://github.com/disintar/toncli master | awk '{print $1}')
           prev_commit="${{needs.download-prev.prev}}"
-          echo "update=${cur_commit}"
           [ "${cur_commit}" == "${prev_commit}" ] && echo "No update" || echo "update=${cur_commit}" >> $GITHUB_OUTPUT 
   trigger-update:
     runs-on: ubuntu-latest
     needs: [check-commit]
-    if: ${{ always() }}
+    if: ${{ needs.check-commit.outputs.update }}
     steps:
       - name: Save prev
         run: | 
-          echo ${{needs.check-commit.update}}
-          echo ${{needs.check-commit.update}} > prev_commit.txt
+          echo ${{needs.check-commit.outputs.update}}
+          echo ${{needs.check-commit.outputs.update}} > prev_commit.txt
       - name: Upload prev
         uses: actions/upload-artifact@v3
         with:
