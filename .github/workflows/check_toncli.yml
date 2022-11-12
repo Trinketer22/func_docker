@@ -13,7 +13,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: prev_commit.txt
-          key: steps.toncli_cur.outputs.commit
+          key: ${{steps.toncli_cur.outputs.commit}}
 
       - id: update
         if: steps.cache.outputs.cache-hit != 'true'
