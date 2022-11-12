@@ -26,8 +26,8 @@ jobs:
       - id: check
         name: Check commit
         run: |
-          $cur_commit  = $(git ls-remote https://github.com/disintar/toncli master | awk '{print $1}')
-          $prev_commit = ${{ needs.download-prev.prev}}
+          cur_commit=$(git ls-remote https://github.com/disintar/toncli master | awk '{print $1}')
+          prev_commit="${{ needs.download-prev.prev}}"
           echo $cur_commit
           echo $prev_commit
           [ "$cur_commit" == "$prev_commit" ] && echo 1 >> $GITHUB_OUTPUT
