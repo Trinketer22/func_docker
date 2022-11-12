@@ -34,12 +34,12 @@ jobs:
   trigger-update:
     runs-on: ubuntu-latest
     needs: [download-prev, check-commit]
-    if: ${{ always() }}
+    if: ${{ needs.check-commit.update }}
     steps:
       - name: Save prev
         run: | 
-          echo ${{needs.check-commit.update_required}}
-          echo ${{needs.check-commit.update_required}} > prev_commit.txt
+          echo ${{needs.check-commit.update}}
+          echo ${{needs.check-commit.update}} > prev_commit.txt
       - name: Upload prev
         uses: actions/upload-artifact@v3
         with:
