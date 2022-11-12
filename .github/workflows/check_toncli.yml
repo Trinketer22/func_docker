@@ -2,7 +2,6 @@ name: "Check toncli"
 on:
   workflow_dispatch:
 jobs:
-       
   check-commit:
     runs-on: ubuntu-latest
     outputs:
@@ -17,7 +16,7 @@ jobs:
 
       - id: load_prev
         run: |
-          ${{steps.cache.outputs.cache-hit}} && echo "prev=$(cat prev_commit.txt)" >> $GITHUB_OUTPUT || echo "Cache not hit"
+          [ "${{steps.cache.outputs.cache-hit}}" != ""] && echo "prev=$(cat prev_commit.txt)" >> $GITHUB_OUTPUT || echo "Cache not hit"
 
       - id: check
         name: Check commit
