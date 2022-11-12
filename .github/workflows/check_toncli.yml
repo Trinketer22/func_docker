@@ -22,7 +22,3 @@ jobs:
           echo $cur_commit
           echo $prev_commit
           [ "$cur_commit" == "$prev_commit" ] && echo 1 >> $GITHUB_OUTPUT
-          
-      
-        
-    
