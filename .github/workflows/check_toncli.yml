@@ -14,7 +14,7 @@ jobs:
           name: prev_commit
           path: prev_commit.txt
       - name: Prev output
-        run: cat prev_commit.txt >> $GITHUB_OUTPUT
+        run: echo "prev_commit=$(cat prev_commit.txt)" >> $GITHUB_OUTPUT
         
   check-commit:
     runs-on: ubuntu-latest
@@ -31,3 +31,15 @@ jobs:
           echo $prev_commit
           echo $cur_commit
           [ "${cur_commit}" == "{$prev_commit}" ] && echo "No update" || echo "update=${cur_commit}" >> $GITHUB_OUTPUT 
+  trigger-update:
+    runs-on: ubuntu-latest
+    needs: [check-commit]
+    if: ${{ needs.check-commit.update_required }}
+    steps:
+      - name: Save prev
+        run: echo ${{needs.check-commit.update_required}} > prev_commit.txt
+      - name: Upload prev
+        uses: actions/upload-artifact@v3
+        with:
+          name: prev_commit
+          path: prev_commit.txt
