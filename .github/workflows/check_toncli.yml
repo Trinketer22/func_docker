@@ -34,7 +34,7 @@ jobs:
   trigger-update:
     runs-on: ubuntu-latest
     needs: [check-commit]
-    if: ${{ needs.check-commit.update_required }}
+    if: ${{ needs.check-commit.update_required != Null }}
     steps:
       - name: Save prev
         run: echo ${{needs.check-commit.update_required}} > prev_commit.txt
