@@ -50,14 +50,20 @@ docker build . -t toncli-local \
 
 
 ## Use
+ 
+ It's also useful to copy `toncli-docker` binary to your path (or copy it to /usr/local/bin) so you can access it from anywhere. 
 
- Go to the path, where you are going to create your project (e.g. ~/your/path/dev/)
+ ``` console
+ cp ./toncli-docker /usr/local/bin/toncli-docker
+ ```
+
+ Now go to the path, where you are going to create your project (e.g. ~/your/path/dev/)
 
 ### Creating project
  Run
 
  ``` console
- ./toncli-docker.sh start --name test_project wallet 
+ toncli-docker start --name test_project wallet 
  ```
  
  You're going to see the toncli project structure in *~/your/path/dev/test_project*  
@@ -70,13 +76,13 @@ docker build . -t toncli-local \
   Run  
 
   ``` console
-  ./toncli-docker.sh build
+  toncli-docker build
   ```
 	
  ### Running tests
 
   ``` console
-  ./toncli-docker.sh run_tests
+  toncli-docker run_tests
   ```
 
  ### Deploying contract
@@ -95,7 +101,7 @@ docker build . -t toncli-local \
   Or
 
   ``` console
-  ./toncli-docker.sh update_libs /path/to/toncli_conf_dir/
+  toncli-docker update_libs /path/to/toncli_conf_dir/
   ```
 
   After that you should go through standard toncli initialization dialog and pass absolute paths to the binaries
@@ -128,7 +134,7 @@ docker build . -t toncli-local \
   Or
 
   ``` console
-  ./toncli-docker.sh deploy /path/to/toncli_conf_dir/ --net testnet
+  toncli-docker deploy /path/to/toncli_conf_dir/ --net testnet
   ```
   
   **wallet** directory would be created inside your local config dir with all the usefull deployment information
