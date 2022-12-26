@@ -48,7 +48,6 @@ docker build . -t toncli-local \
 ```
 
 
-
 ## Use
  
  It's also useful to copy `toncli-docker` binary to your path (or copy it to /usr/local/bin) so you can access it from anywhere. 
@@ -89,19 +88,15 @@ docker build . -t toncli-local \
    Now here is the tricky part.  
    **Toncli** stores deployment info in it's config directory instead of your project directory.  
    So we're going to have to create another volume for that to persist.  
-   
-  Run
+
   ``` console
-  docker run --rm -it \
-  -v ~/Dev/test_project:/code \
-  -v /path/to/toncli_conf_dir/:/root/.config \
-  toncli-local update_libs
+  toncli-docker update_libs
   ```
 
-  Or
-
+  The deployment info is stored in the `~/.toncli-deploy` dir by default.
+  If you want to change this path, you can run this command:
   ``` console
-  toncli-docker update_libs /path/to/toncli_conf_dir/
+  toncli-docker --set-deployment-path /your/custom/path
   ```
 
   After that you should go through standard toncli initialization dialog and pass absolute paths to the binaries
@@ -122,23 +117,14 @@ docker build . -t toncli-local \
   
   Now you can use it in the deploy or any other process like so.  
   
-  Run  
-  
-  ``` console
-  docker run --rm -it \
-  -v /path/to/project:/code \
-  -v /path/to/toncli_conf_dir/:/root/.config \
-  toncli-local deploy --net testnet
-  ```
-
-  Or
+  Run
 
   ``` console
-  toncli-docker deploy /path/to/toncli_conf_dir/ --net testnet
+  toncli-docker deploy --net testnet
   ```
   
   **wallet** directory would be created inside your local config dir with all the usefull deployment information
-### General usage
+### General usage without toncli-docker wrapper
  ``` console
  docker run --rm -it \
  -v <code_volume> \
