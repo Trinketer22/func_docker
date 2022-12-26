@@ -1,19 +1,70 @@
 #!/bin/bash
 
+# where permanent variables are stored
+CONFIG_VAR_PATH="$HOME/.toncli-config"
+
+# Usage: kv_validate_key <key>
+kv_validate_key() {
+	[[ "$1" =~ ^[0-9a-zA-Z._:-]+$  ]]
+}
+
+# Usage: kvget <key>
+kvget() {
+	key="$1"
+	kv_validate_key "$key" || {
+		kv_echo_err_box 'invalid param "key"' 'kvget()'
+		return 1
+	}
+	kv_user_dir=${KV_USER_DIR:-$CONFIG_VAR_PATH}
+	VALUE="$([ -f "$CONFIG_VAR_PATH/$key" ] && cat "$CONFIG_VAR_PATH/$key")"
+	echo "$VALUE"
+	
+	[ "$VALUE" != "" ]
+}
+
+# Usage: kvset <key> [value] 
+kvset() {
+	key="$1"
+	value="$2"
+	kv_validate_key "$key" || {
+		kv_echo_err_box 'invalid param "key"' 'kvset()'
+		return 1
+	}
+	kv_user_dir=${KV_USER_DIR:-$CONFIG_VAR_PATH}
+	test -d "$kv_user_dir" || mkdir "$kv_user_dir"
+	echo "$value" > "$kv_user_dir/$key"
+}
+
+# Usage: kvdel <key>
+kvdel() {
+	key="$1"
+	kv_validate_key "$key" || {
+		kv_echo_err_box 'invalid param "key"' 'kvdel()'
+		return 1
+	}
+	kv_user_dir=${KV_USER_DIR:-$CONFIG_VAR_PATH}
+	test -f "$kv_user_dir/$key" && rm -f "$kv_user_dir/$key"
+}
+
+
 TONCLI_CMD="toncli-local"
+# where toncli stores deployment info
+DEPLOY_PATH=$(kvget DEPLOY_PATH) || "$HOME/.toncli-deploy"
 
 # ./toncli-docker update_libs /path/to/toncli_conf_dir/
 if [[ $1 == "update_libs" ]]; then
     docker run --rm -it \
     -v "$(pwd)":/code \
-    -v "$2":/root/.config \
+    -v "$DEPLOY_PATH":/root/.config \
     $TONCLI_CMD update_libs
 # ./toncli-docker deploy /path/to/toncli_conf_dir/
 elif [[ $1 == "deploy" ]]; then
     docker run --rm -it \
     -v "$(pwd)":/code \
-    -v "$2":/root/.config \
+    -v "$DEPLOY_PATH":/root/.config \
     $TONCLI_CMD deploy $@:3
+elif [[ $1 == "--set-deployment-path" ]]; then
+    kvset DEPLOY_PATH "$2"
 else
     docker run --rm -it \
     -v "$(pwd)":/code \
