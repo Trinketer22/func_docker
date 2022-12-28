@@ -62,7 +62,7 @@ elif [[ $1 == "deploy" ]]; then
     docker run --rm -it \
     -v "$(pwd)":/code \
     -v "$DEPLOY_PATH":/root/.config \
-    $TONCLI_CMD deploy $@:3
+    $TONCLI_CMD deploy $@
 elif [[ $1 == "--set-deployment-path" ]]; then
     kvset DEPLOY_PATH "$2"
 else
