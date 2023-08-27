@@ -1,9 +1,9 @@
 FROM ubuntu:20.04 as builder
 RUN apt-get update && \
-	DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential cmake clang-6.0 openssl libssl-dev zlib1g-dev gperf wget git && \
+	DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential cmake clang openssl libssl-dev pkg-config libsecp256k1-dev libsodium-dev libmicrohttpd-dev zlib1g-dev gperf wget git && \
 	rm -rf /var/lib/apt/lists/*
-ENV CC clang-6.0
-ENV CXX clang++-6.0
+ENV CC clang
+ENV CXX clang++
 
 ARG TON_GIT=https://github.com/SpyCheese/ton
 ARG TON_BRANCH=toncli-local
@@ -35,7 +35,7 @@ RUN mkdir build && \
 
 FROM ubuntu:20.04 as toncli
 RUN apt-get update && \
-	DEBIAN_FRONTEND=noninteractive apt-get install -y openssl wget python3 pip && \
+	DEBIAN_FRONTEND=noninteractive apt-get install -y libsodium23 libsecp256k1-0 openssl wget python3 pip && \
 	rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /ton/build/lite-client/lite-client /usr/local/bin/
