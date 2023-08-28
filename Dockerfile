@@ -24,9 +24,9 @@ RUN mkdir build && \
 		echo "Executing cmake with args: ${CUSTOM_CMAKE}"; \
 		cmake .. ${CUSTOM_CMAKE}; \
 	elif [ ${BUILD_DEBUG} -eq 0 ]; then \
-		cmake .. -DTON_ARCH="" -DCMAKE_BUILD_TYPE=Release; \
+		cmake .. -DTON_ARCH="" -DPORTABLE=1 -DCMAKE_BUILD_TYPE=Release; \
 	else \
-		cmake .. -DTON_ARCH=""; \
+		cmake .. -DTON_ARCH="" -DPORTABLE=1; \
 	fi && \
 	cmake --build . --parallel $(nproc) -j $(nproc) --target fift && \
 	cmake --build . --parallel  $(nproc) -j $(nproc)  --target func && \
