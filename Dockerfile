@@ -1,9 +1,7 @@
-FROM ubuntu:20.04 as builder
+FROM ubuntu:22.04 as builder
 RUN apt-get update && \
-	DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential cmake clang openssl libssl-dev pkg-config libsecp256k1-dev libsodium-dev libmicrohttpd-dev zlib1g-dev gperf wget git && \
-	rm -rf /var/lib/apt/lists/*
-ENV CC clang
-ENV CXX clang++
+	DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential cmake ninja-build openssl libtool autoconf lsb-release software-properties-common gpg libssl-dev pkg-config libsecp256k1-dev liblz4-dev libsodium-dev libjemalloc-dev ccache libmicrohttpd-dev zlib1g-dev gperf wget git && rm -rf /var/lib/apt/lists/*
+
 
 ARG TON_GIT=https://github.com/SpyCheese/ton
 ARG TON_BRANCH=toncli-local
@@ -16,24 +14,20 @@ RUN echo "Cloning ${TON_GIT} ${TON_BRANCH}" && \
 	git clone -b ${TON_BRANCH} --recursive ${TON_GIT} && \
     	git clone https://github.com/disintar/toncli
 
+RUN wget https://apt.llvm.org/llvm.sh && chmod +x ./llvm.sh
+RUN ./llvm.sh 16 all
+
+ENV CC clang-16
+ENV CXX clang++-16
+
 WORKDIR /ton
 
-RUN mkdir build && \
-	cd build && \
-	if [ ! -z ${CUSTOM_CMAKE} ]; then \
-		echo "Executing cmake with args: ${CUSTOM_CMAKE}"; \
-		cmake .. ${CUSTOM_CMAKE}; \
-	elif [ ${BUILD_DEBUG} -eq 0 ]; then \
-		cmake .. -DTON_ARCH="" -DPORTABLE=1 -DCMAKE_BUILD_TYPE=Release; \
-	else \
-		cmake .. -DTON_ARCH="" -DPORTABLE=1; \
-	fi && \
-	cmake --build . --parallel $(nproc) -j $(nproc) --target fift && \
-	cmake --build . --parallel  $(nproc) -j $(nproc)  --target func && \
-	cmake --build . --parallel  $(nproc) -j $(nproc)  --target lite-client && \
-	cmake --build . --parallel  $(nproc) -j $(nproc)  --target tonlibjson
+RUN mkdir build && cd build && \
+	cmake -GNinja -DTON_USE_JEMALLOC=ON ..\
+	-DCMAKE_BUILD_TYPE=Release && \
+	ninja fift func lite-client tonlibjson
 
-FROM ubuntu:20.04 as toncli
+FROM ubuntu:22.04 as toncli
 RUN apt-get update && \
 	DEBIAN_FRONTEND=noninteractive apt-get install -y libsodium23 libsecp256k1-0 openssl wget python3 pip && \
 	rm -rf /var/lib/apt/lists/*
@@ -43,6 +37,10 @@ COPY --from=builder /ton/build/crypto/func /usr/local/bin/
 COPY --from=builder /ton/build/crypto/fift /usr/local/bin/
 COPY --from=builder /ton/build/tonlib/libtonlibjson.so /usr/local/lib/
 COPY --from=builder /toncli /toncli
+
+RUN /usr/local/bin/func -V
+RUN /usr/local/bin/fift -V
+RUN /usr/local/bin/lite-client -V
 
 WORKDIR /
 
