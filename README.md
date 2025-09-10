@@ -48,53 +48,57 @@ docker build . -t toncli-local \
 ```
 
 
-
 ## Use
+ 
+ It's also useful to copy `toncli-docker` binary to your path (or copy it to /usr/local/bin) so you can access it from anywhere. 
 
- You're going to need to pass your workdir as a volume to make things happen
+ ``` console
+ cp ./toncli-docker /usr/local/bin/toncli-docker
+ ```
+
+ Now go to the path, where you are going to create your project (e.g. ~/your/path/dev/)
 
 ### Creating project
- Run  
- 
+ Run
+
  ``` console
- docker run --rm -it \
- -v ~/Dev:/code \
- toncli-local start --name test_project wallet 
+ toncli-docker start --name test_project wallet 
  ```
  
- You're going to see the toncli project structure in *~/Dev/test_project*  
+ You're going to see the toncli project structure in *~/your/path/dev/test_project*  
  `README.md  build  fift  func  project.yaml  tests`
   
  ### Building
+
+  Go to your project path by `cd ~/your/path/dev/test_project` and
  
   Run  
-  
+
   ``` console
-  docker run --rm -it \
-  -v ~/Dev/test_project:/code \
-  toncli-local build
+  toncli-docker build
   ```
 	
  ### Running tests
-   
-   ``` console
-   docker run --rm -it \
-   -v ~/Dev/test_project:/code \
-   toncli-local run_tests
-   ``` 
+
+  ``` console
+  toncli-docker run_tests
+  ```
 
  ### Deploying contract
    Now here is the tricky part.  
    **Toncli** stores deployment info in it's config directory instead of your project directory.  
    So we're going to have to create another volume for that to persist.  
-   
-  Run
+
   ``` console
-  docker run --rm -it \
-  -v ~/Dev/test_project:/code \
-  -v /path/to/toncli_conf_dir/:/root/.config \
-  toncli-local update_libs
+  toncli-docker update_libs
   ```
+
+  The deployment info is stored in the `~/.toncli-deploy` dir by default.
+  If you want to change this path, you can run this command:
+  ``` console
+  toncli-docker --set-deployment-path /your/custom/path
+  ```
+
   After that you should go through standard toncli initialization dialog and pass absolute paths to the binaries
 -   /usr/local/bin/func
 -   /usr/local/bin/fift
@@ -113,17 +117,14 @@ docker build . -t toncli-local \
   
   Now you can use it in the deploy or any other process like so.  
   
-  Run  
-  
+  Run
+
   ``` console
-  docker run --rm -it \
-  -v /path/to/project:/code \
-  -v /path/to/toncli_conf_dir/:/root/.config \
-  toncli-local deploy --net testnet
+  toncli-docker deploy --net testnet
   ```
   
   **wallet** directory would be created inside your local config dir with all the usefull deployment information
-### General usage
+### General usage without toncli-docker wrapper
  ``` console
  docker run --rm -it \
  -v <code_volume> \
