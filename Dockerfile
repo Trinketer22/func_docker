@@ -60,6 +60,14 @@ RUN mkdir -p $HOME/$TONCLI_CONFD && \
 	toncli update_libs && \
 	mkdir -p /code
 
+COPY --from=builder /ton/crypto/fift/lib/Asm.fif /
+COPY merge_asm.sh /
+
+RUN mv Asm.fif $HOME/$TONCLI_CONFD/fift-libs/Asm.fif
+
+RUN bash merge_asm.sh $HOME/$TONCLI_CONFD/fift-libs/Asm.fif $HOME/$TONCLI_CONFD/fift-libs/AsmTests.fif
+RUN rm /merge_asm.sh
+
 COPY hello /code
 
 COPY toncli.sh /
